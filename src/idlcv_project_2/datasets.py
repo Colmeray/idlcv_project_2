@@ -9,7 +9,6 @@ class FrameImageDataset(torch.utils.data.Dataset):
     def __init__(self, 
     root_dir='/dtu/datasets1/02516/ufc10',
     split='train', 
-    test=True
     transform=None
 ):
         self.frame_paths = sorted(glob(f'{root_dir}/frames/{split}/*/*/*.jpg'))
