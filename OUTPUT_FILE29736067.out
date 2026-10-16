@@ -1,0 +1,67 @@
+epoch  1 | train loss 0.495 | train acc (frame) 0.849 | val acc (video) 0.950
+epoch  2 | train loss 0.031 | train acc (frame) 0.991 | val acc (video) 0.967
+epoch  3 | train loss 0.017 | train acc (frame) 0.996 | val acc (video) 0.958
+epoch  4 | train loss 0.012 | train acc (frame) 0.997 | val acc (video) 0.958
+epoch  5 | train loss 0.008 | train acc (frame) 0.997 | val acc (video) 0.958
+epoch  6 | train loss 0.009 | train acc (frame) 0.998 | val acc (video) 0.958
+epoch  7 | train loss 0.009 | train acc (frame) 0.997 | val acc (video) 0.933
+epoch  8 | train loss 0.021 | train acc (frame) 0.993 | val acc (video) 0.950
+epoch  9 | train loss 0.014 | train acc (frame) 0.995 | val acc (video) 0.942
+epoch 10 | train loss 0.016 | train acc (frame) 0.994 | val acc (video) 0.908
+best val 0.967 | test acc (video) 0.950
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 29736067: <jobscript> in cluster <dcc> Done
+
+Job <jobscript> was submitted from host <n-62-11-12> by user <s246103> in cluster <dcc> at Fri Oct 16 11:49:37 2026
+Job was executed on host(s) <4*n-62-18-13>, in queue <c02516>, as user <s246103> in cluster <dcc> at Fri Oct 16 11:49:39 2026
+</zhome/6a/4/216341> was used as the home directory.
+</zhome/6a/4/216341/idlcv_project_2> was used as the working directory.
+Started at Fri Oct 16 11:49:39 2026
+Terminated at Fri Oct 16 11:54:48 2026
+Results reported at Fri Oct 16 11:54:48 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+
+#BSUB -q c02516
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -J jobscript
+#BSUB -n 4
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=20GB]"
+#BSUB -o OUTPUT_FILE%J.out
+#BSUB -e OUTPUT_FILE%J.err
+
+source ~/idlcv_project_2/.venv/bin/activate
+cd ~/idlcv_project_2/src/idlcv_project_2
+uv run per_frame.py
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   420.59 sec.
+    Max Memory :                                 1250 MB
+    Average Memory :                             836.00 MB
+    Total Requested Memory :                     81920.00 MB
+    Delta Memory :                               80670.00 MB
+    Max Swap :                                   -
+    Max Processes :                              9
+    Max Threads :                                27
+    Run time :                                   308 sec.
+    Turnaround time :                            311 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <OUTPUT_FILE29736067.err> for stderr output of this job.
+
