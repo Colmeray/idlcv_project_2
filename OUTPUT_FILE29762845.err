@@ -1,0 +1,26 @@
+Traceback (most recent call last):
+  File "/zhome/1b/e/216660/idlcv_project_2/src/idlcv_project_2/late_fusion.py", line 162, in <module>
+    outputs = model(videos)
+  File "/zhome/1b/e/216660/idlcv_project_2/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/zhome/1b/e/216660/idlcv_project_2/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/zhome/1b/e/216660/idlcv_project_2/src/idlcv_project_2/late_fusion.py", line 105, in forward
+    features = self.cnn(x)
+  File "/zhome/1b/e/216660/idlcv_project_2/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/zhome/1b/e/216660/idlcv_project_2/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/zhome/1b/e/216660/idlcv_project_2/.venv/lib64/python3.9/site-packages/torchvision/models/resnet.py", line 285, in forward
+    return self._forward_impl(x)
+  File "/zhome/1b/e/216660/idlcv_project_2/.venv/lib64/python3.9/site-packages/torchvision/models/resnet.py", line 268, in _forward_impl
+    x = self.conv1(x)
+  File "/zhome/1b/e/216660/idlcv_project_2/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/zhome/1b/e/216660/idlcv_project_2/.venv/lib64/python3.9/site-packages/torch/nn/modules/module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/zhome/1b/e/216660/idlcv_project_2/.venv/lib64/python3.9/site-packages/torch/nn/modules/conv.py", line 548, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "/zhome/1b/e/216660/idlcv_project_2/.venv/lib64/python3.9/site-packages/torch/nn/modules/conv.py", line 543, in _conv_forward
+    return F.conv2d(
+RuntimeError: Given groups=1, weight of size [64, 3, 7, 7], expected input[192, 10, 224, 224] to have 3 channels, but got 10 channels instead
