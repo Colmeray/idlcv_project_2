@@ -12,11 +12,6 @@ from torchvision.models.efficientnet import MBConv, MBConvConfig
 from datasets import FrameImageDataset, FrameVideoDataset
 from torchvision.io import decode_image
 
-def to_early_fusion(x):
-    C, Tn, H, W = x.shape
-    return x.permute(1, 0, 2, 3).reshape(Tn * C, H, W)
-
-
 # Applied to individual frames by FrameVideoDataset
 frame_tf = T.Compose([
     T.ToTensor(),

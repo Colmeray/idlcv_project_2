@@ -1,4 +1,3 @@
-
 import os
 import torch
 import torch.nn as nn
@@ -8,7 +7,6 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from torchvision.models import vgg11, VGG11_Weights
 from datasets import FrameVideoDataset
-
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
