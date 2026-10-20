@@ -1,0 +1,57 @@
+torch.Size([64, 30, 224, 224])
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 29762319: <jobscript> in cluster <dcc> Done
+
+Job <jobscript> was submitted from host <n-62-11-12> by user <s245735> in cluster <dcc> at Tue Oct 20 13:56:00 2026
+Job was executed on host(s) <4*n-62-18-13>, in queue <c02516>, as user <s245735> in cluster <dcc> at Tue Oct 20 13:56:03 2026
+</zhome/1b/e/216660> was used as the home directory.
+</zhome/1b/e/216660/idlcv_project_2> was used as the working directory.
+Started at Tue Oct 20 13:56:03 2026
+Terminated at Tue Oct 20 13:57:29 2026
+Results reported at Tue Oct 20 13:57:29 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+
+#BSUB -q c02516
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -J jobscript
+#BSUB -n 4
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=20GB]"
+#BSUB -o OUTPUT_FILE%J.out
+#BSUB -e OUTPUT_FILE%J.err
+
+source ~/idlcv_project_2/.venv/bin/activate
+cd ~/idlcv_project_2/src/idlcv_project_2
+uv run early_fusion.py
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   16.38 sec.
+    Max Memory :                                 410 MB
+    Average Memory :                             343.33 MB
+    Total Requested Memory :                     81920.00 MB
+    Delta Memory :                               81510.00 MB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                7
+    Run time :                                   86 sec.
+    Turnaround time :                            89 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <OUTPUT_FILE29762319.err> for stderr output of this job.
+

@@ -11,4 +11,4 @@
 
 source ~/idlcv_project_2/.venv/bin/activate
 cd ~/idlcv_project_2/src/idlcv_project_2
-uv run per_frame.py
+uv run early_fusion.py
