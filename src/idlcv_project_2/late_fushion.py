@@ -79,7 +79,7 @@ val_loader = DataLoader(
 # ==========================================
 
 class LateFusionCNN(nn.Module):
-    def __init__(self, num_classes=2):
+    def __init__(self, num_classes=10):
         super().__init__()
 
         self.cnn = resnet18(weights=None)
@@ -128,7 +128,7 @@ device = torch.device(
     "cuda" if torch.cuda.is_available() else "cpu"
 )
 
-model = LateFusionCNN(num_classes=2).to(device)
+model = LateFusionCNN(num_classes=10).to(device)
 
 criterion = nn.CrossEntropyLoss()
 
