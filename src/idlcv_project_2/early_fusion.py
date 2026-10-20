@@ -1,234 +1,347 @@
-
+import os
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
-from torchvision import transforms as T
-from torchvision.models import resnet18
+import torchvision.transforms as T
+import matplotlib.pyplot as plt
 
+from torch.utils.data import DataLoader
+from torchvision.models import vgg11, VGG11_Weights
 from datasets import FrameVideoDataset
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# ==========================================
-# TRANSFORMS
-# ==========================================
+n_frames = 10
+n_classes = 10
+n_epochs = 10
 
-# Applied to each individual frame
+weights = VGG11_Weights.DEFAULT
+ref = weights.transforms()
+
+
+# --------------------------------------------------
+# 1. Early fusion
+# --------------------------------------------------
+
+def to_early_fusion(x):
+    # [C, T, H, W] -> [T*C, H, W]
+    C, Tn, H, W = x.shape
+    return x.permute(1, 0, 2, 3).reshape(Tn * C, H, W)
+
+
+# Applied to individual frames in FrameVideoDataset
 frame_tf = T.Compose([
-    T.ToTensor(),
+    T.ToTensor()
+])
+
+# Applied to the complete stacked video
+train_tf = T.Compose([
+    T.RandomResizedCrop(224, scale=(0.7, 1.0)),
+    T.RandomHorizontalFlip(),
+    T.Lambda(to_early_fusion),
+    T.Normalize(ref.mean * n_frames, ref.std * n_frames),
+])
+
+eval_tf = T.Compose([
+    T.Resize((224, 224)),
+    T.Lambda(to_early_fusion),
+    T.Normalize(ref.mean * n_frames, ref.std * n_frames),
 ])
 
 
-# ==========================================
-# COLLATE FUNCTIONS
-# ==========================================
+# --------------------------------------------------
+# 2. Custom collate for video-level transforms
+# --------------------------------------------------
 
-def train_collate(batch):
-    videos, labels = zip(*batch)
-    videos = torch.stack(videos)
-    labels = torch.tensor(labels, dtype=torch.long)
-    return videos, labels
+class VideoCollate:
+    def __init__(self, transform):
+        self.transform = transform
 
+    def __call__(self, batch):
+        videos, labels = zip(*batch)
 
-def eval_collate(batch):
-    videos, labels = zip(*batch)
-    videos = torch.stack(videos)
-    labels = torch.tensor(labels, dtype=torch.long)
-    return videos, labels
+        videos = torch.stack([
+            self.transform(video) for video in videos
+        ])
 
+        labels = torch.tensor(labels, dtype=torch.long)
 
-# ==========================================
-# DATASETS
-# ==========================================
-
-trainset = FrameVideoDataset(
-    split="train",
-    transform=frame_tf,
-    stack_frames=True
-)
-
-valset = FrameVideoDataset(
-    split="val",
-    transform=frame_tf,
-    stack_frames=True
-)
+        return videos, labels
 
 
-# ==========================================
-# DATALOADERS
-# ==========================================
+# --------------------------------------------------
+# 3. Model
+# --------------------------------------------------
 
-train_loader = DataLoader(
-    trainset,
-    batch_size=64,
-    shuffle=True,
-    num_workers=4,
-    collate_fn=train_collate
-)
+def create_model():
+    model = vgg11(weights=weights)
 
-val_loader = DataLoader(
-    valset,
-    batch_size=4,
-    shuffle=False,
-    num_workers=4,
-    collate_fn=eval_collate
-)
+    # Save pretrained first convolution
+    old_conv = model.features[0]
 
+    # Replace 3 input channels with 30
+    new_conv = nn.Conv2d(
+        in_channels=3 * n_frames,
+        out_channels=old_conv.out_channels,
+        kernel_size=old_conv.kernel_size,
+        stride=old_conv.stride,
+        padding=old_conv.padding,
+        bias=old_conv.bias is not None
+    )
 
-# ==========================================
-# LATE FUSION CNN
-# ==========================================
-
-class LateFusionCNN(nn.Module):
-    def __init__(self, num_classes=2):
-        super().__init__()
-
-        self.cnn = resnet18(weights=None)
-
-        # Remove the original classification layer
-        num_features = self.cnn.fc.in_features
-        self.cnn.fc = nn.Identity()
-
-        # Classification after fusion
-        self.classifier = nn.Linear(
-            num_features,
-            num_classes
+    # Initialize using pretrained RGB filters
+    with torch.no_grad():
+        new_conv.weight.copy_(
+            old_conv.weight.repeat(1, n_frames, 1, 1)
+            / n_frames
         )
 
-    def forward(self, x):
-        # x: (B, T, C, H, W)
-        B, T, C, H, W = x.shape
+        if old_conv.bias is not None:
+            new_conv.bias.copy_(old_conv.bias)
 
-        # Process each frame independently
-        x = x.reshape(B * T, C, H, W)
+    # Freeze pretrained convolutional layers
+    for p in model.features.parameters():
+        p.requires_grad = False
 
-        # Extract features
-        features = self.cnn(x)
-        # (B*T, 512)
+    # Replace first convolution (trainable)
+    model.features[0] = new_conv
 
-        # Restore video dimension
-        features = features.reshape(B, T, -1)
-        # (B, T, 512)
+    # Replace final classification layer
+    model.classifier[6] = nn.Linear(4096, n_classes)
 
-        # Late fusion: average over frames
-        features = features.mean(dim=1)
-        # (B, 512)
-
-        # Final classification
-        output = self.classifier(features)
-        # (B, num_classes)
-
-        return output
+    return model.to(device)
 
 
-# ==========================================
-# TRAINING SETUP
-# ==========================================
+# --------------------------------------------------
+# 4. Training
+# --------------------------------------------------
 
-device = torch.device(
-    "cuda" if torch.cuda.is_available() else "cpu"
-)
-
-model = LateFusionCNN(num_classes=2).to(device)
-
-criterion = nn.CrossEntropyLoss()
-
-optimizer = torch.optim.Adam(
-    model.parameters(),
-    lr=0.001
-)
-
-epochs = 10
-
-
-# ==========================================
-# TRAINING LOOP
-# ==========================================
-
-for epoch in range(epochs):
-
+def train_epoch(model, loader, optimizer, criterion):
     model.train()
 
-    train_loss = 0.0
-    train_correct = 0
-    train_total = 0
+    total = 0
+    correct = 0
+    loss_sum = 0.0
 
-    for videos, labels in train_loader:
+    for x, y in loader:
+        x = x.to(device)
+        y = y.to(device)
 
-        videos = videos.to(device)
-        labels = labels.to(device)
+        logits = model(x)
+        loss = criterion(logits, y)
 
         optimizer.zero_grad()
-
-        outputs = model(videos)
-
-        loss = criterion(outputs, labels)
-
         loss.backward()
         optimizer.step()
 
-        train_loss += loss.item() * labels.size(0)
+        loss_sum += loss.item() * y.size(0)
+        correct += (logits.argmax(1) == y).sum().item()
+        total += y.size(0)
 
-        predictions = outputs.argmax(dim=1)
+    return correct / total, loss_sum / total
 
-        train_correct += (
-            predictions == labels
-        ).sum().item()
 
-        train_total += labels.size(0)
+# --------------------------------------------------
+# 5. Video-level evaluation
+# --------------------------------------------------
 
-    train_loss /= train_total
-    train_acc = train_correct / train_total
-
-    # ======================================
-    # VALIDATION
-    # ======================================
-
+@torch.no_grad()
+def eval_video(model, loader, criterion):
     model.eval()
 
-    val_loss = 0.0
-    val_correct = 0
-    val_total = 0
+    total = 0
+    correct = 0
+    loss_sum = 0.0
 
-    with torch.no_grad():
+    for x, y in loader:
+        # x: [B, 30, 224, 224]
+        x = x.to(device)
+        y = y.to(device)
 
-        for videos, labels in val_loader:
+        logits = model(x)
+        loss = criterion(logits, y)
 
-            videos = videos.to(device)
-            labels = labels.to(device)
+        loss_sum += loss.item() * y.size(0)
+        correct += (logits.argmax(1) == y).sum().item()
+        total += y.size(0)
 
-            outputs = model(videos)
+    return correct / total, loss_sum / total
 
-            loss = criterion(outputs, labels)
 
-            val_loss += loss.item() * labels.size(0)
+# --------------------------------------------------
+# 6. Main
+# --------------------------------------------------
 
-            predictions = outputs.argmax(dim=1)
+if __name__ == "__main__":
 
-            val_correct += (
-                predictions == labels
-            ).sum().item()
-
-            val_total += labels.size(0)
-
-    val_loss /= val_total
-    val_acc = val_correct / val_total
-
-    print(
-        f"Epoch [{epoch+1}/{epochs}] "
-        f"Train Loss: {train_loss:.4f} "
-        f"Train Acc: {train_acc:.4f} "
-        f"Val Loss: {val_loss:.4f} "
-        f"Val Acc: {val_acc:.4f}"
+    trainset = FrameVideoDataset(
+        split='train',
+        transform=frame_tf,
+        stack_frames=True
     )
 
+    valset = FrameVideoDataset(
+        split='val',
+        transform=frame_tf,
+        stack_frames=True
+    )
 
-# ==========================================
-# SAVE MODEL
-# ==========================================
+    testset = FrameVideoDataset(
+        split='test',
+        transform=frame_tf,
+        stack_frames=True
+    )
 
-torch.save(
-    model.state_dict(),
-    "late_fusion_cnn.pth"
-)
+    train_loader = DataLoader(
+        trainset,
+        batch_size=8,
+        shuffle=True,
+        num_workers=4,
+        collate_fn=VideoCollate(train_tf)
+    )
 
-print("Model saved!")
+    val_loader = DataLoader(
+        valset,
+        batch_size=4,
+        shuffle=False,
+        num_workers=4,
+        collate_fn=VideoCollate(eval_tf)
+    )
+
+    test_loader = DataLoader(
+        testset,
+        batch_size=4,
+        shuffle=False,
+        num_workers=4,
+        collate_fn=VideoCollate(eval_tf)
+    )
+
+    # Check input shape
+    images, labels = next(iter(train_loader))
+    print("Input shape:", images.shape)
+
+    model = create_model()
+
+    optimizer = torch.optim.Adam(
+        (p for p in model.parameters() if p.requires_grad),
+        lr=1e-4,
+        weight_decay=1e-4
+    )
+
+    criterion = nn.CrossEntropyLoss()
+
+    hist = {
+        'train_acc': [],
+        'train_loss': [],
+        'val_acc': [],
+        'val_loss': []
+    }
+
+    best_val = -1.0
+
+    # ----------------------------------------------
+    # Training loop
+    # ----------------------------------------------
+
+    for epoch in range(1, n_epochs + 1):
+
+        tr_acc, tr_loss = train_epoch(
+            model, train_loader, optimizer, criterion
+        )
+
+        va_acc, va_loss = eval_video(
+            model, val_loader, criterion
+        )
+
+        hist['train_acc'].append(tr_acc)
+        hist['train_loss'].append(tr_loss)
+        hist['val_acc'].append(va_acc)
+        hist['val_loss'].append(va_loss)
+
+        print(
+            f"epoch {epoch:2d} | "
+            f"train loss {tr_loss:.3f} | "
+            f"train acc (video) {tr_acc:.3f} | "
+            f"val acc (video) {va_acc:.3f}"
+        )
+
+        if va_acc > best_val:
+            best_val = va_acc
+            torch.save(
+                model.state_dict(),
+                'best_early_fusion.pt'
+            )
+
+    # ----------------------------------------------
+    # Test best model
+    # ----------------------------------------------
+
+    model.load_state_dict(
+        torch.load(
+            'best_early_fusion.pt',
+            map_location=device,
+            weights_only=True
+        )
+    )
+
+    test_acc, test_loss = eval_video(
+        model, test_loader, criterion
+    )
+
+    print(
+        f"best val {best_val:.3f} | "
+        f"test acc (video) {test_acc:.3f}"
+    )
+
+    # ----------------------------------------------
+    # Plot training curves
+    # ----------------------------------------------
+
+    epochs = range(1, n_epochs + 1)
+
+    fig, (ax1, ax2) = plt.subplots(
+        1, 2, figsize=(10, 4)
+    )
+
+    ax1.plot(
+        epochs, hist['train_acc'],
+        'o-', label='train (video-level)'
+    )
+
+    ax1.plot(
+        epochs, hist['val_acc'],
+        'o-', label='val (video-level)'
+    )
+
+    ax1.axhline(
+        test_acc,
+        ls='--',
+        c='gray',
+        label=f'test (best-val model) = {test_acc:.3f}'
+    )
+
+    ax1.set_xlabel('epoch')
+    ax1.set_ylabel('accuracy')
+    ax1.legend()
+    ax1.grid(alpha=.3)
+
+    ax2.plot(
+        epochs, hist['train_loss'],
+        'o-', label='train loss'
+    )
+
+    ax2.plot(
+        epochs, hist['val_loss'],
+        'o-', label='val loss'
+    )
+
+    ax2.set_xlabel('epoch')
+    ax2.set_ylabel('loss')
+    ax2.legend()
+    ax2.grid(alpha=.3)
+
+    fig.tight_layout()
+
+    fig.savefig(
+        'early_fusion_curves.png',
+        dpi=150
+    )
