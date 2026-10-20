@@ -11,4 +11,4 @@
 
 source ~/idlcv_project_2/.venv/bin/activate
 cd ~/idlcv_project_2/src/idlcv_project_2
-uv run early_fusion.py
+uv run late_fusion.py
