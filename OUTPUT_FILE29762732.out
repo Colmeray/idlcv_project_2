@@ -1,0 +1,69 @@
+Input shape: torch.Size([8, 30, 224, 224])
+Downloading: "https://download.pytorch.org/models/vgg11-8a719046.pth" to /zhome/1b/e/216660/.cache/torch/hub/checkpoints/vgg11-8a719046.pth
+epoch  1 | train loss 1.753 | train acc (video) 0.412 | val acc (video) 0.692
+epoch  2 | train loss 0.722 | train acc (video) 0.798 | val acc (video) 0.858
+epoch  3 | train loss 0.325 | train acc (video) 0.890 | val acc (video) 0.875
+epoch  4 | train loss 0.176 | train acc (video) 0.954 | val acc (video) 0.942
+epoch  5 | train loss 0.103 | train acc (video) 0.966 | val acc (video) 0.875
+epoch  6 | train loss 0.091 | train acc (video) 0.976 | val acc (video) 0.908
+epoch  7 | train loss 0.091 | train acc (video) 0.970 | val acc (video) 0.942
+epoch  8 | train loss 0.067 | train acc (video) 0.984 | val acc (video) 0.925
+epoch  9 | train loss 0.073 | train acc (video) 0.970 | val acc (video) 0.908
+epoch 10 | train loss 0.062 | train acc (video) 0.974 | val acc (video) 0.908
+best val 0.942 | test acc (video) 0.925
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 29762732: <jobscript> in cluster <dcc> Done
+
+Job <jobscript> was submitted from host <hpclogin1> by user <s245735> in cluster <dcc> at Tue Oct 20 14:45:56 2026
+Job was executed on host(s) <4*n-62-18-13>, in queue <c02516>, as user <s245735> in cluster <dcc> at Tue Oct 20 14:45:58 2026
+</zhome/1b/e/216660> was used as the home directory.
+</zhome/1b/e/216660/idlcv_project_2> was used as the working directory.
+Started at Tue Oct 20 14:45:58 2026
+Terminated at Tue Oct 20 14:48:58 2026
+Results reported at Tue Oct 20 14:48:58 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+
+#BSUB -q c02516
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -J jobscript
+#BSUB -n 4
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=20GB]"
+#BSUB -o OUTPUT_FILE%J.out
+#BSUB -e OUTPUT_FILE%J.err
+
+source ~/idlcv_project_2/.venv/bin/activate
+cd ~/idlcv_project_2/src/idlcv_project_2
+uv run early_fusion.py
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   308.66 sec.
+    Max Memory :                                 1525 MB
+    Average Memory :                             1324.50 MB
+    Total Requested Memory :                     81920.00 MB
+    Delta Memory :                               80395.00 MB
+    Max Swap :                                   -
+    Max Processes :                              9
+    Max Threads :                                27
+    Run time :                                   180 sec.
+    Turnaround time :                            182 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <OUTPUT_FILE29762732.err> for stderr output of this job.
+
