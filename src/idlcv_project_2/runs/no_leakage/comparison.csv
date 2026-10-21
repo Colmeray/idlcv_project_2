@@ -1,0 +1,2 @@
+model,best_epoch,val_accuracy,val_correct,val_total,val_ci_low,val_ci_high,val_loss,params,test_accuracy,test_ci_low,test_ci_high
+late_fusion,11,0.275,33,120,0.20302896661264852,0.3609296582757681,2.853822962443034,11182155,,,

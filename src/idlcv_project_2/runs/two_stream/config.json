@@ -1,0 +1,55 @@
+{
+  "settings": {
+    "data_root": "/dtu/datasets1/02516/ucf101_noleakage",
+    "out_dir": "runs/two_stream",
+    "models": [
+      "two_stream"
+    ],
+    "epochs": 20,
+    "batch_size": 16,
+    "accum_steps": 4,
+    "patience": 7,
+    "image_size": 112,
+    "frames": 10,
+    "lr": 0.0001,
+    "weight_decay": 0.0001,
+    "seed": 42,
+    "num_workers": 4,
+    "device": "auto",
+    "pretrained": false,
+    "flow_root": "/dtu/datasets1/02516/ucf101_noleakage/flows_png",
+    "flow_format": "auto",
+    "flow_scale": 20.0,
+    "test_policy": "none"
+  },
+  "device": "cuda",
+  "split_sizes": {
+    "train": 500,
+    "val": 120,
+    "test": 120
+  },
+  "label_mapping": {
+    "0": 0,
+    "1": 1,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 5,
+    "6": 6,
+    "7": 7,
+    "8": 8,
+    "9": 9
+  },
+  "class_names": [
+    "BodyWeightSquats",
+    "HandstandPushups",
+    "HandstandWalking",
+    "JumpingJack",
+    "JumpRope",
+    "Lunges",
+    "PullUps",
+    "PushUps",
+    "TrampolineJumping",
+    "WallPushups"
+  ]
+}

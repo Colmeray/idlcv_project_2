@@ -9,12 +9,15 @@
 #BSUB -o no_leakage%J.out
 #BSUB -e no_leakage%J.err
 
+source ~/idlcv_project_2/.venv/bin/activate
+cd ~/idlcv_project_2/src/idlcv_project_2
+
 uv run python train.py \
     --data-root /dtu/datasets1/02516/ucf101_noleakage \
     --models two_stream \
-    --flow-root /dtu/datasets1/02516/ucf101_noleakage/flows-png \
+    --flow-root /dtu/datasets1/02516/ucf101_noleakage/flows_png \
     --epochs 20 \
-    --batch-size 2 \
+    --batch-size 16 \
     --accum-steps 4 \
     --num-workers 4 \
     --out-dir runs/two_stream \

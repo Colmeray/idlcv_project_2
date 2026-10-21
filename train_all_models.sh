@@ -17,7 +17,7 @@ uv run python train.py \
     --data-root /dtu/datasets1/02516/ufc10 \
     --models frame_avg late_fusion early_fusion r3d_18 \
     --epochs 20 \
-    --batch-size 2 \
+    --batch-size 16 \
     --accum-steps 4 \
     --num-workers 4 \
     --out-dir runs/part41 \

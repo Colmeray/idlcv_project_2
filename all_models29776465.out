@@ -1,0 +1,155 @@
+Using device: cuda
+Videos in each split: {'train': 500, 'val': 120, 'test': 120}
+
+Training frame_avg (11,181,642 parameters)
+frame_avg | epoch 1 | train loss 2.208, accuracy 22.2% | val loss 2.097, accuracy 28.3% | 95% CI [21.0%, 37.0%]
+frame_avg | epoch 2 | train loss 1.636, accuracy 59.6% | val loss 1.640, accuracy 56.7% | 95% CI [47.7%, 65.2%]
+frame_avg | epoch 3 | train loss 1.207, accuracy 74.0% | val loss 1.301, accuracy 63.3% | 95% CI [54.4%, 71.4%]
+frame_avg | epoch 4 | train loss 0.786, accuracy 84.8% | val loss 0.983, accuracy 73.3% | 95% CI [64.8%, 80.4%]
+frame_avg | epoch 5 | train loss 0.505, accuracy 92.4% | val loss 0.723, accuracy 82.5% | 95% CI [74.7%, 88.3%]
+frame_avg | epoch 6 | train loss 0.288, accuracy 96.0% | val loss 0.603, accuracy 82.5% | 95% CI [74.7%, 88.3%]
+frame_avg | epoch 7 | train loss 0.162, accuracy 98.4% | val loss 0.492, accuracy 84.2% | 95% CI [76.6%, 89.6%]
+frame_avg | epoch 8 | train loss 0.085, accuracy 99.6% | val loss 0.492, accuracy 85.0% | 95% CI [77.5%, 90.3%]
+frame_avg | epoch 9 | train loss 0.069, accuracy 99.6% | val loss 0.399, accuracy 88.3% | 95% CI [81.4%, 92.9%]
+frame_avg | epoch 10 | train loss 0.049, accuracy 99.6% | val loss 0.404, accuracy 89.2% | 95% CI [82.3%, 93.6%]
+frame_avg | epoch 11 | train loss 0.027, accuracy 100.0% | val loss 0.457, accuracy 87.5% | 95% CI [80.4%, 92.3%]
+frame_avg | epoch 12 | train loss 0.021, accuracy 100.0% | val loss 0.468, accuracy 85.8% | 95% CI [78.5%, 91.0%]
+frame_avg | epoch 13 | train loss 0.020, accuracy 99.8% | val loss 0.385, accuracy 87.5% | 95% CI [80.4%, 92.3%]
+frame_avg | epoch 14 | train loss 0.017, accuracy 100.0% | val loss 0.424, accuracy 87.5% | 95% CI [80.4%, 92.3%]
+frame_avg | epoch 15 | train loss 0.014, accuracy 100.0% | val loss 0.430, accuracy 87.5% | 95% CI [80.4%, 92.3%]
+frame_avg | epoch 16 | train loss 0.013, accuracy 100.0% | val loss 0.462, accuracy 86.7% | 95% CI [79.4%, 91.6%]
+frame_avg | epoch 17 | train loss 0.013, accuracy 99.8% | val loss 0.484, accuracy 87.5% | 95% CI [80.4%, 92.3%]
+Early stopping. Best epoch was 10.
+
+Training late_fusion (11,182,155 parameters)
+late_fusion | epoch 1 | train loss 2.209, accuracy 23.2% | val loss 2.071, accuracy 29.2% | 95% CI [21.8%, 37.8%]
+late_fusion | epoch 2 | train loss 1.646, accuracy 56.8% | val loss 1.693, accuracy 44.2% | 95% CI [35.6%, 53.1%]
+late_fusion | epoch 3 | train loss 1.224, accuracy 73.0% | val loss 1.356, accuracy 58.3% | 95% CI [49.4%, 66.8%]
+late_fusion | epoch 4 | train loss 0.810, accuracy 85.0% | val loss 1.049, accuracy 70.8% | 95% CI [62.2%, 78.2%]
+late_fusion | epoch 5 | train loss 0.523, accuracy 91.4% | val loss 0.731, accuracy 78.3% | 95% CI [70.1%, 84.8%]
+late_fusion | epoch 6 | train loss 0.287, accuracy 96.6% | val loss 0.622, accuracy 82.5% | 95% CI [74.7%, 88.3%]
+late_fusion | epoch 7 | train loss 0.156, accuracy 99.0% | val loss 0.468, accuracy 86.7% | 95% CI [79.4%, 91.6%]
+late_fusion | epoch 8 | train loss 0.075, accuracy 100.0% | val loss 0.474, accuracy 84.2% | 95% CI [76.6%, 89.6%]
+late_fusion | epoch 9 | train loss 0.060, accuracy 99.8% | val loss 0.415, accuracy 87.5% | 95% CI [80.4%, 92.3%]
+late_fusion | epoch 10 | train loss 0.034, accuracy 100.0% | val loss 0.381, accuracy 90.0% | 95% CI [83.3%, 94.2%]
+late_fusion | epoch 11 | train loss 0.016, accuracy 100.0% | val loss 0.416, accuracy 87.5% | 95% CI [80.4%, 92.3%]
+late_fusion | epoch 12 | train loss 0.014, accuracy 100.0% | val loss 0.427, accuracy 88.3% | 95% CI [81.4%, 92.9%]
+late_fusion | epoch 13 | train loss 0.010, accuracy 100.0% | val loss 0.395, accuracy 87.5% | 95% CI [80.4%, 92.3%]
+late_fusion | epoch 14 | train loss 0.009, accuracy 100.0% | val loss 0.404, accuracy 86.7% | 95% CI [79.4%, 91.6%]
+late_fusion | epoch 15 | train loss 0.006, accuracy 100.0% | val loss 0.416, accuracy 86.7% | 95% CI [79.4%, 91.6%]
+late_fusion | epoch 16 | train loss 0.007, accuracy 100.0% | val loss 0.430, accuracy 84.2% | 95% CI [76.6%, 89.6%]
+late_fusion | epoch 17 | train loss 0.005, accuracy 100.0% | val loss 0.415, accuracy 86.7% | 95% CI [79.4%, 91.6%]
+Early stopping. Best epoch was 10.
+
+Training early_fusion (11,266,314 parameters)
+early_fusion | epoch 1 | train loss 2.244, accuracy 17.4% | val loss 2.154, accuracy 22.5% | 95% CI [15.9%, 30.8%]
+early_fusion | epoch 2 | train loss 1.871, accuracy 42.6% | val loss 1.888, accuracy 41.7% | 95% CI [33.2%, 50.6%]
+early_fusion | epoch 3 | train loss 1.503, accuracy 61.2% | val loss 1.620, accuracy 49.2% | 95% CI [40.4%, 58.0%]
+early_fusion | epoch 4 | train loss 1.111, accuracy 78.4% | val loss 1.333, accuracy 60.8% | 95% CI [51.9%, 69.1%]
+early_fusion | epoch 5 | train loss 0.789, accuracy 87.8% | val loss 1.039, accuracy 72.5% | 95% CI [63.9%, 79.7%]
+early_fusion | epoch 6 | train loss 0.462, accuracy 94.4% | val loss 0.827, accuracy 75.0% | 95% CI [66.6%, 81.9%]
+early_fusion | epoch 7 | train loss 0.239, accuracy 98.2% | val loss 0.655, accuracy 80.0% | 95% CI [72.0%, 86.2%]
+early_fusion | epoch 8 | train loss 0.108, accuracy 100.0% | val loss 0.652, accuracy 80.0% | 95% CI [72.0%, 86.2%]
+early_fusion | epoch 9 | train loss 0.082, accuracy 99.4% | val loss 0.545, accuracy 80.0% | 95% CI [72.0%, 86.2%]
+early_fusion | epoch 10 | train loss 0.050, accuracy 99.6% | val loss 0.550, accuracy 81.7% | 95% CI [73.8%, 87.6%]
+early_fusion | epoch 11 | train loss 0.042, accuracy 99.4% | val loss 0.564, accuracy 81.7% | 95% CI [73.8%, 87.6%]
+early_fusion | epoch 12 | train loss 0.026, accuracy 100.0% | val loss 0.507, accuracy 82.5% | 95% CI [74.7%, 88.3%]
+early_fusion | epoch 13 | train loss 0.020, accuracy 100.0% | val loss 0.567, accuracy 81.7% | 95% CI [73.8%, 87.6%]
+early_fusion | epoch 14 | train loss 0.036, accuracy 99.4% | val loss 0.639, accuracy 83.3% | 95% CI [75.7%, 88.9%]
+early_fusion | epoch 15 | train loss 0.023, accuracy 100.0% | val loss 0.610, accuracy 80.8% | 95% CI [72.9%, 86.9%]
+early_fusion | epoch 16 | train loss 0.024, accuracy 99.6% | val loss 0.524, accuracy 83.3% | 95% CI [75.7%, 88.9%]
+early_fusion | epoch 17 | train loss 0.026, accuracy 100.0% | val loss 0.603, accuracy 81.7% | 95% CI [73.8%, 87.6%]
+early_fusion | epoch 18 | train loss 0.014, accuracy 100.0% | val loss 0.640, accuracy 80.0% | 95% CI [72.0%, 86.2%]
+early_fusion | epoch 19 | train loss 0.019, accuracy 99.6% | val loss 0.705, accuracy 81.7% | 95% CI [73.8%, 87.6%]
+early_fusion | epoch 20 | train loss 0.025, accuracy 99.6% | val loss 0.641, accuracy 84.2% | 95% CI [76.6%, 89.6%]
+
+Training r3d_18 (33,171,402 parameters)
+r3d_18 | epoch 1 | train loss 2.172, accuracy 21.6% | val loss 2.011, accuracy 26.7% | 95% CI [19.6%, 35.2%]
+r3d_18 | epoch 2 | train loss 1.669, accuracy 44.2% | val loss 1.745, accuracy 40.0% | 95% CI [31.7%, 48.9%]
+r3d_18 | epoch 3 | train loss 1.285, accuracy 63.8% | val loss 1.507, accuracy 50.8% | 95% CI [42.0%, 59.6%]
+r3d_18 | epoch 4 | train loss 0.869, accuracy 80.4% | val loss 1.503, accuracy 50.0% | 95% CI [41.2%, 58.8%]
+r3d_18 | epoch 5 | train loss 0.546, accuracy 89.2% | val loss 1.140, accuracy 60.8% | 95% CI [51.9%, 69.1%]
+r3d_18 | epoch 6 | train loss 0.255, accuracy 97.6% | val loss 1.080, accuracy 71.7% | 95% CI [63.0%, 79.0%]
+r3d_18 | epoch 7 | train loss 0.153, accuracy 97.8% | val loss 1.708, accuracy 55.0% | 95% CI [46.1%, 63.6%]
+r3d_18 | epoch 8 | train loss 0.118, accuracy 98.6% | val loss 0.887, accuracy 76.7% | 95% CI [68.3%, 83.3%]
+r3d_18 | epoch 9 | train loss 0.070, accuracy 99.4% | val loss 0.913, accuracy 75.8% | 95% CI [67.4%, 82.6%]
+r3d_18 | epoch 10 | train loss 0.079, accuracy 99.0% | val loss 0.988, accuracy 74.2% | 95% CI [65.7%, 81.2%]
+r3d_18 | epoch 11 | train loss 0.044, accuracy 99.6% | val loss 1.225, accuracy 68.3% | 95% CI [59.6%, 76.0%]
+r3d_18 | epoch 12 | train loss 0.039, accuracy 100.0% | val loss 1.077, accuracy 69.2% | 95% CI [60.4%, 76.7%]
+r3d_18 | epoch 13 | train loss 0.072, accuracy 98.0% | val loss 1.530, accuracy 62.5% | 95% CI [53.6%, 70.6%]
+r3d_18 | epoch 14 | train loss 0.037, accuracy 99.6% | val loss 0.952, accuracy 80.0% | 95% CI [72.0%, 86.2%]
+r3d_18 | epoch 15 | train loss 0.029, accuracy 100.0% | val loss 1.335, accuracy 66.7% | 95% CI [57.8%, 74.5%]
+r3d_18 | epoch 16 | train loss 0.022, accuracy 99.8% | val loss 1.037, accuracy 70.0% | 95% CI [61.3%, 77.5%]
+r3d_18 | epoch 17 | train loss 0.026, accuracy 99.8% | val loss 1.058, accuracy 67.5% | 95% CI [58.7%, 75.2%]
+r3d_18 | epoch 18 | train loss 0.023, accuracy 99.6% | val loss 1.079, accuracy 73.3% | 95% CI [64.8%, 80.4%]
+r3d_18 | epoch 19 | train loss 0.017, accuracy 100.0% | val loss 1.147, accuracy 71.7% | 95% CI [63.0%, 79.0%]
+r3d_18 | epoch 20 | train loss 0.026, accuracy 99.8% | val loss 0.906, accuracy 75.8% | 95% CI [67.4%, 82.6%]
+Best validation model: late_fusion
+Results saved in: runs/part41
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 29776465: <all_models> in cluster <dcc> Done
+
+Job <all_models> was submitted from host <hpclogin1> by user <s245735> in cluster <dcc> at Wed Oct 21 17:05:38 2026
+Job was executed on host(s) <4*n-62-18-13>, in queue <c02516>, as user <s245735> in cluster <dcc> at Wed Oct 21 17:05:40 2026
+</zhome/1b/e/216660> was used as the home directory.
+</zhome/1b/e/216660/idlcv_project_2> was used as the working directory.
+Started at Wed Oct 21 17:05:40 2026
+Terminated at Wed Oct 21 17:15:19 2026
+Results reported at Wed Oct 21 17:15:19 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+
+#!/bin/sh
+
+#BSUB -q c02516
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -J all_models
+#BSUB -n 4
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=20GB]"
+#BSUB -o all_models%J.out
+#BSUB -e all_models%J.err
+
+source ~/idlcv_project_2/.venv/bin/activate
+cd ~/idlcv_project_2/src/idlcv_project_2
+
+uv run python train.py \
+    --data-root /dtu/datasets1/02516/ufc10 \
+    --models frame_avg late_fusion early_fusion r3d_18 \
+    --epochs 20 \
+    --batch-size 16 \
+    --accum-steps 4 \
+    --num-workers 4 \
+    --out-dir runs/part41 \
+    --test-policy none
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   1279.34 sec.
+    Max Memory :                                 1420 MB
+    Average Memory :                             1378.83 MB
+    Total Requested Memory :                     81920.00 MB
+    Delta Memory :                               80500.00 MB
+    Max Swap :                                   -
+    Max Processes :                              9
+    Max Threads :                                28
+    Run time :                                   579 sec.
+    Turnaround time :                            581 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <all_models29776465.err> for stderr output of this job.
+
