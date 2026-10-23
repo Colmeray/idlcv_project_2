@@ -1,0 +1,93 @@
+Using device: cuda
+Videos in each split: {'train': 500, 'val': 120, 'test': 120}
+Note: 2D weights come from ImageNet and 3D weights from Kinetics, so pretraining differs.
+
+Training late_fusion (11,182,155 parameters)
+late_fusion | epoch 1 | train loss 1.747, accuracy 48.4% | val loss 1.876, accuracy 40.8% | 95% CI [32.5%, 49.8%]
+late_fusion | epoch 2 | train loss 0.517, accuracy 95.6% | val loss 1.594, accuracy 48.3% | 95% CI [39.6%, 57.2%]
+late_fusion | epoch 3 | train loss 0.124, accuracy 100.0% | val loss 1.481, accuracy 47.5% | 95% CI [38.8%, 56.4%]
+late_fusion | epoch 4 | train loss 0.033, accuracy 100.0% | val loss 1.476, accuracy 48.3% | 95% CI [39.6%, 57.2%]
+late_fusion | epoch 5 | train loss 0.015, accuracy 100.0% | val loss 1.449, accuracy 50.0% | 95% CI [41.2%, 58.8%]
+late_fusion | epoch 6 | train loss 0.009, accuracy 100.0% | val loss 1.457, accuracy 50.8% | 95% CI [42.0%, 59.6%]
+late_fusion | epoch 7 | train loss 0.006, accuracy 100.0% | val loss 1.382, accuracy 57.5% | 95% CI [48.6%, 66.0%]
+late_fusion | epoch 8 | train loss 0.003, accuracy 100.0% | val loss 1.425, accuracy 56.7% | 95% CI [47.7%, 65.2%]
+late_fusion | epoch 9 | train loss 0.005, accuracy 100.0% | val loss 1.450, accuracy 54.2% | 95% CI [45.3%, 62.8%]
+late_fusion | epoch 10 | train loss 0.004, accuracy 100.0% | val loss 1.400, accuracy 59.2% | 95% CI [50.2%, 67.5%]
+late_fusion | epoch 11 | train loss 0.002, accuracy 100.0% | val loss 1.408, accuracy 56.7% | 95% CI [47.7%, 65.2%]
+late_fusion | epoch 12 | train loss 0.002, accuracy 100.0% | val loss 1.432, accuracy 55.8% | 95% CI [46.9%, 64.4%]
+late_fusion | epoch 13 | train loss 0.002, accuracy 100.0% | val loss 1.407, accuracy 57.5% | 95% CI [48.6%, 66.0%]
+late_fusion | epoch 14 | train loss 0.006, accuracy 99.8% | val loss 1.430, accuracy 55.0% | 95% CI [46.1%, 63.6%]
+late_fusion | epoch 15 | train loss 0.002, accuracy 100.0% | val loss 1.408, accuracy 54.2% | 95% CI [45.3%, 62.8%]
+late_fusion | epoch 16 | train loss 0.002, accuracy 100.0% | val loss 1.440, accuracy 55.8% | 95% CI [46.9%, 64.4%]
+late_fusion | epoch 17 | train loss 0.003, accuracy 100.0% | val loss 1.456, accuracy 52.5% | 95% CI [43.6%, 61.2%]
+Early stopping. Best epoch was 10.
+Best validation model: late_fusion
+Results saved in: runs/no_leakage
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 29798596: <no_leakage> in cluster <dcc> Done
+
+Job <no_leakage> was submitted from host <hpclogin1> by user <s245735> in cluster <dcc> at Fri Oct 23 12:44:34 2026
+Job was executed on host(s) <4*n-62-18-13>, in queue <c02516>, as user <s245735> in cluster <dcc> at Fri Oct 23 12:44:35 2026
+</zhome/1b/e/216660> was used as the home directory.
+</zhome/1b/e/216660/idlcv_project_2> was used as the working directory.
+Started at Fri Oct 23 12:44:35 2026
+Terminated at Fri Oct 23 12:47:06 2026
+Results reported at Fri Oct 23 12:47:06 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+
+#!/bin/sh
+
+#BSUB -q c02516
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -J no_leakage
+#BSUB -n 4
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=20GB]"
+#BSUB -o no_leakage%J.out
+#BSUB -e no_leakage%J.err
+
+source ~/idlcv_project_2/.venv/bin/activate
+cd ~/idlcv_project_2/src/idlcv_project_2
+
+uv run python train.py \
+    --data-root /dtu/datasets1/02516/ucf101_noleakage \
+    --models late_fusion \
+    --epochs 20 \
+    --pretrained \
+    --batch-size 16 \
+    --accum-steps 4 \
+    --num-workers 4 \
+    --out-dir runs/no_leakage \
+    --test-policy none
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   274.96 sec.
+    Max Memory :                                 1340 MB
+    Average Memory :                             1181.00 MB
+    Total Requested Memory :                     81920.00 MB
+    Delta Memory :                               80580.00 MB
+    Max Swap :                                   -
+    Max Processes :                              9
+    Max Threads :                                28
+    Run time :                                   151 sec.
+    Turnaround time :                            152 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <no_leakage29798596.err> for stderr output of this job.
+

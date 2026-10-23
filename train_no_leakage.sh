@@ -17,6 +17,7 @@ uv run python train.py \
     --data-root /dtu/datasets1/02516/ucf101_noleakage \
     --models late_fusion \
     --epochs 20 \
+    --pretrained \
     --batch-size 16 \
     --accum-steps 4 \
     --num-workers 4 \

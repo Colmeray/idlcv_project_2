@@ -16,7 +16,7 @@
     "seed": 42,
     "num_workers": 4,
     "device": "auto",
-    "pretrained": false,
+    "pretrained": true,
     "flow_root": "/dtu/datasets1/02516/ucf101_noleakage/flows_png",
     "flow_format": "auto",
     "flow_scale": 20.0,

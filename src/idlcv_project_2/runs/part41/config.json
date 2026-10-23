@@ -19,7 +19,7 @@
     "seed": 42,
     "num_workers": 4,
     "device": "auto",
-    "pretrained": false,
+    "pretrained": true,
     "flow_root": null,
     "flow_format": "auto",
     "flow_scale": 20.0,
